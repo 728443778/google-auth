@@ -4,6 +4,7 @@
 #define UNIX_TIME_START  0
 #include <time.h>
 #include <string>
+#include <sodium.h>
 
 
 namespace TOTP 
@@ -11,7 +12,7 @@ namespace TOTP
 
     std::string truncate()
     {
-        
+
     }
 
     int getUnixTimeCount(int diff = 30)

@@ -34,19 +34,23 @@ defmodule TOTP do
     end
   end
 
-  # secret
-  def getPassword(secret \\ "GVCDKM2FIFBDSQSE",shaAlgo \\ :sha, passwdLength \\ 6, step \\ 30) do
+  def passwordByHOTP(counter, secret \\ "GVCDKM2FIFBDSQSE",shaAlgo \\ :sha, passwdLength \\ 6) do
     secret = Base.decode32!(secret)
-    step = getCount(step)
     list = List.duplicate(0, 8)
-    {list, _} = Enum.map_reduce(list, step, fn _, step ->
-      x = step &&& 0xFF
-      step = step >>> 8
-      {x, step}
+    {list, _} = Enum.map_reduce(list, counter, fn _, counter ->
+      x = counter &&& 0xFF
+      counter = counter >>> 8
+      {x, counter}
     end)
     moveFac = Enum.reverse(list) |> :erlang.list_to_binary
     hash = :crypto.hmac(shaAlgo, secret, moveFac)
     truncate(hash, passwdLength)
+  end
+
+  # secret
+  def getPassword(secret \\ "GVCDKM2FIFBDSQSE",shaAlgo \\ :sha, passwdLength \\ 6, step \\ 30) do
+    step = getCount(step)
+    passwordByHOTP(step, secret, shaAlgo, passwdLength)
   end
 
   def createSecret() do
