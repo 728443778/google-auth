@@ -129,7 +129,7 @@ std::string generatePasswordByTOTP(string secret,int step = 30, int passwordLeng
     return generatePasswordByHOTP(step, secret, passwordLength);
 }
 
-bool veriPasswordByHOTP(string &inputPssword, string& secret, int step = 30, int passwordLength = 6)
+bool veriPasswordByTOTP(string &inputPssword, string& secret, int step = 30, int passwordLength = 6)
 {
     return inputPssword == generatePasswordByTOTP(secret, step, passwordLength);
 }
