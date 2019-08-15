@@ -66,9 +66,11 @@ string createSecret(unsigned short length = 16)
     if (length > 32) {
         length = 32;
     }
-    unsigned char in[128];
-    RAND_bytes(in, 128);
-    auto secret = cppcodec::base32_rfc4648::encode(in);
+    unsigned char in[64];
+    RAND_bytes(in, 64);
+    char hash[20];
+    HMAC(EVP_sha1(), in, 64, in, 64, (unsigned char *)hash, NULL);
+    auto secret = cppcodec::base32_rfc4648::encode(hash);
     //替换其中的 =
     secret.erase(std::remove(secret.begin(), secret.end(), '='), secret.end());
     if (secret.length() < length) {
