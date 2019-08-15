@@ -69,7 +69,7 @@ string createSecret(unsigned short length = 16)
     unsigned char in[128];
     RAND_bytes(in, 128);
     auto secret = cppcodec::base32_rfc4648::encode(in);
-    //替换屌其中的 =
+    //替换其中的 =
     secret.erase(std::remove(secret.begin(), secret.end(), '='), secret.end());
     if (secret.length() < length) {
         return std::string("");
@@ -125,6 +125,11 @@ std::string generatePasswordByTOTP(string secret,int step = 30, int passwordLeng
 {
     step = getUnixTimeCount(step);
     return generatePasswordByHOTP(step, secret, passwordLength);
+}
+
+bool veriPasswordByHOTP(string &inputPssword, string& secret, int step = 30, int passwordLength = 6)
+{
+    return inputPssword == generatePasswordByTOTP(secret, step, passwordLength);
 }
 
 } // namespace TOTP
