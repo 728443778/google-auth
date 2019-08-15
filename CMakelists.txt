@@ -1,0 +1,8 @@
+set(INCLUDE_PATH "d:/local/openssl/include")
+set(LIB_PATH "d:/local/openssl/lib")
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build/bin)
+include_directories(${INCLUDE_PATH})
+set(LIBRARIES "libcrypto.lib" "libssl.lib")
+LINK_DIRECTORIES(${LIB_PATH})
+add_executable(totp_test totp_test.cpp)
+target_link_libraries(totp_test ${LIBRARIES})
