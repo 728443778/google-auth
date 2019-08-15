@@ -79,8 +79,19 @@ string createSecret(unsigned short length = 16)
     return secret.substr(0, length);
 }
 
+/**
+ * @param string in 应是 8的偶数倍，如果不是，会自动在末尾填充=
+ * */
 void decodeSecret(string &in, string& out)
 {
+    if (in.empty()) {
+        return ;
+    }
+    auto inFillCount = in.length() % 8;
+    if (inFillCount > 0) {
+        inFillCount = 8 - inFillCount;
+        in = in + std::string(inFillCount, '=');
+    }
     auto s2 = cppcodec::base32_rfc4648::decode(in);
     out.clear();
     for(auto i: s2) {

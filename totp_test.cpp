@@ -3,7 +3,7 @@
 
 int main()
 {
-    auto createSecret = TOTP::createSecret(16);
+    auto createSecret = TOTP::createSecret(16); //创建一个不是8的偶数secret 用来解码
     std::cout<<"create secret:"<<createSecret<<std::endl;
     std::string secret("5FERSOMZHKN4CQU7");
     std::cout<<"used secret:"<<secret<<std::endl;
