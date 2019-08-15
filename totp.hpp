@@ -103,9 +103,9 @@ std::string generatePasswordByHOTP(int counter, string secret, int passwdLength 
     HMAC(EVP_sha1(), decodeScret.c_str(), decodeScret.length(), (const unsigned char*)counterResult, sizeof(counterResult), (unsigned char * )digist, &length);
     std::string s;
     int i = 0;
-    if (length > 1024) {
-        length = 1024;
-    }
+    // if (length > 1024) {  //hmac sha1 输出空间只有20字节
+    //     length = 1024;
+    // }
     for (;i<length;i++) {
         s.push_back(digist[i]);
     }
