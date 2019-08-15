@@ -6,7 +6,8 @@
 #include <string>
 #include <memory.h>
 #include <openssl/hmac.h>
-#include <assert.h>
+#include <openssl/rand.h>
+#include <algorithm>
 #include "three/codec/cppcodec/base32_rfc4648.hpp"
 
 using namespace std;
@@ -65,7 +66,15 @@ string createSecret(unsigned short length = 16)
     if (length > 32) {
         length = 32;
     }
-
+    unsigned char in[128];
+    RAND_bytes(in, 128);
+    auto secret = cppcodec::base32_rfc4648::encode(in);
+    //替换屌其中的 =
+    secret.erase(std::remove(secret.begin(), secret.end(), '='), secret.end());
+    if (secret.length() < length) {
+        return std::string("");
+    }
+    return secret.substr(0, length);
 }
 
 void decodeSecret(string &in, string& out)
